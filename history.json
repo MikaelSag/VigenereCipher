@@ -1,0 +1,14 @@
+{
+    "Passwords": [
+        "KEY",
+        "BBBBBBB"
+    ],
+    "Plaintext": [
+        "ABC",
+        "HELLO"
+    ],
+    "Ciphertext": [
+        "KFA",
+        "IFMMP"
+    ]
+}
