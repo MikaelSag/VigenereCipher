@@ -9,8 +9,6 @@ if len(sys.argv) > 1:
 else:
     log_file = "log.txt"
 
-storage_file = "history.json"
-
 # run logger.py as a subprocess
 logger = subprocess.Popen(
     ["python3", "Logger.py", log_file],
@@ -26,26 +24,15 @@ encrypter = subprocess.Popen(
     text = True
 )
 
-
-# load entire history from json file
-def load_history():
-    if not os.path.exists(storage_file):
-        print("ERROR Unable to load history")
-        return
-    else:
-        with open(storage_file, "r") as f:
-            return json.load(f)
-
-
-# retrieve all entries for a single category from the history
-def get_entry(category):
-    history = load_history()
-    return history.get(category, [])
-
+# store history for the duration of the program
+history = {
+    "Passwords": [],
+    "Plaintext": [],
+    "Ciphertext": []
+}
 
 # allow the user to select an entry from the displayed history for a given category
 def select_from_history(category):
-    history = load_history()
     items = history.get(category, [])
     if not items:
         error = "ERROR No entries in history"
@@ -109,6 +96,8 @@ while True:
             logger.stdin.flush()
             encrypter_output = encrypter.stdout.readline()
             print(encrypter_output, flush=True)
+            if "ERROR" not in encrypter_output:
+                history["Passwords"].append(password)
             logger.stdin.write(f"{encrypter_output}\n")
             logger.stdin.flush()
         else:
@@ -136,6 +125,8 @@ while True:
             logger.stdin.flush()
             encrypter_output = encrypter.stdout.readline()
             print(encrypter_output, flush=True)
+            if "ERROR" not in encrypter_output:
+                history["Plaintext"].append(plaintext)
             logger.stdin.write(f"{encrypter_output}\n")
             logger.stdin.flush()
         else:
@@ -163,14 +154,16 @@ while True:
             logger.stdin.flush()
             encrypter_output = encrypter.stdout.readline()
             print(encrypter_output, flush=True)
+            if "ERROR" not in encrypter_output:
+                history["Ciphertext"].append(ciphertext)
             logger.stdin.write(f"{encrypter_output}\n")
             logger.stdin.flush()
         else:
             print(user_input2 + " is not a valid option")
     elif user_input == "history":
-        history = load_history()
         for category, items in history.items():
             print(f"{category}: {','.join(items)}")
+        print()
         logger.stdin.write("HISTORY\n")
         logger.stdin.flush()
     else:

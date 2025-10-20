@@ -16,5 +16,4 @@ or
 - Encrypter.py - Encrypts and decrypts strings using the vigenere cipher
 - Logger.py - Records log messages with time stamps to a specified log file
 - Driver.py - Manages processes, user input, and interprocess communication
-- history.json - Stores plaintexts, ciphertexts, and passkeys that a user has used in the past.
 - devlog.md - Development log and notes

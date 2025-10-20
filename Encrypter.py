@@ -4,7 +4,6 @@ import os
 
 sys.stdout.reconfigure(line_buffering=True)
 
-storage_file = "history.json"
 passkey = ""
 letter_to_num = {
     "A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6,
@@ -18,39 +17,6 @@ num_to_letter = {
     13: "N", 14: "O", 15: "P", 16: "Q", 17: "R", 18: "S",
     19: "T", 20: "U", 21: "V", 22: "W", 23: "X", 24: "Y", 25: "Z"
 }
-
-
-# Retrieve entire history from json file
-def load_history():
-    if not os.path.exists(storage_file):
-        print("ERROR Unable to load history")
-        return {"Passwords": [], "Plaintext": [], "Ciphertext": []}
-    try:
-        with open(storage_file, "r") as f:
-            content = f.read().strip()
-            if not content:
-                return {"Passwords": [], "Plaintext": [], "Ciphertext": []}
-            return json.loads(content)
-    except json.JSONDecodeError:
-        print("ERROR Unable to load history")
-        return {"Passwords": [], "Plaintext": [], "Ciphertexts": []}
-
-
-# write new history into json file
-def save_history(history):
-    with open(storage_file, "w") as f:
-        json.dump(history, f, indent=4)
-
-
-# add entry into history
-def add_entry(category, s):
-    history = load_history()
-    if category in history:
-        history[category].append(s)
-    else:
-        print("ERROR Unable to save history, unknown category: " + category)
-        return
-    save_history(history)
 
 
 def split_string(s):
@@ -82,7 +48,6 @@ def process_input(s):
 def set_pass(s):
     global passkey
     passkey = s
-    add_entry("Passwords", passkey)
     print("RESULT")
     return
 
@@ -105,7 +70,6 @@ def encrypt(plaintext):
 
         ciphertext += num_to_letter[(plaintext_nums[i] + passkey_nums[i]) % 26]
 
-    add_entry("Plaintext", plaintext)
     print("RESULT", ciphertext)
     return
 
@@ -128,7 +92,6 @@ def decrypt(ciphertext):
 
         plaintext += num_to_letter[(ciphertext_nums[i] - passkey_nums[i]) % 26]
 
-    add_entry("Ciphertext", ciphertext)
     print("RESULT", plaintext)
     return
 

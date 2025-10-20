@@ -36,3 +36,7 @@ Everything from the user's side is working correctly. Need to finish testing, ha
 
 ## October 19 3:29pm
 Entire program is working as intended, comments are added, logging is fixed, after some final testing it will be ready to submit.
+
+## October 19 6:57pm
+Made a change to how data is stored, previously past entries were permanently stored in a json file, after reviewing the project requirements,
+past entries are now being stored in memory for the duration of the program and no longer than that.
